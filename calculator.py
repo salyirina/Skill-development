@@ -249,4 +249,9 @@ btn_equal = Button(window, text="=", background="gray11",
                    relief=SOLID, command=equal)
 btn_equal.grid(column=0, row=9, columnspan=4, sticky=E+W, ipady=5)
 
+btn_close = Button(window, text="close", background="gray5",
+                 foreground="Darkorange1", font=font_value, borderwidth=1,
+                 relief = SOLID, command=close)
+btn_close.grid(column=3, row=9, sticky=E+W, ipady=5)
+
 window.mainloop()
