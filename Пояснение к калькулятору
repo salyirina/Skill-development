@@ -1,0 +1,151 @@
+1. close()
+python
+Копировать код
+def close():
+    window.destroy()
+Назначение: Закрывает окно программы.
+Работа: Эта функция вызывает метод destroy() у объекта окна window. При вызове функции окно калькулятора закрывается.
+2. clear()
+python
+Копировать код
+def clear():
+    entry.delete(0, END)
+Назначение: Очищает поле ввода калькулятора.
+Работа: Использует метод delete() у объекта поля ввода entry, удаляя все символы от индекса 0 до конца (END).
+3. back()
+python
+Копировать код
+def back():
+    entry.delete(len(entry.get()) - 1)
+Назначение: Удаляет последний введённый символ в поле ввода.
+Работа: Получает текущий текст из поля ввода с помощью метода get(), вычисляет его длину, затем удаляет символ в конце строки (то есть по индексу, равному длине строки минус 1).
+4. press(input)
+python
+Копировать код
+def press(input):
+    length = len(entry.get())
+    entry.insert(length, input)
+Назначение: Добавляет символы в поле ввода при нажатии на кнопки калькулятора.
+Работа: Вычисляет длину текущего содержимого поля ввода и добавляет символ input в конец строки с помощью метода insert().
+5. add(a, b)
+python
+Копировать код
+def add(a, b):
+    return float(a) + float(b)
+Назначение: Выполняет операцию сложения двух чисел.
+Работа: Преобразует аргументы a и b в числа с плавающей точкой (float) и возвращает их сумму.
+6. subtract(a, b)
+python
+Копировать код
+def subtract(a, b):
+    return float(a) - float(b)
+Назначение: Выполняет операцию вычитания двух чисел.
+Работа: Преобразует аргументы a и b в числа с плавающей точкой и возвращает разность между a и b.
+7. multiply(a, b)
+python
+Копировать код
+def multiply(a, b):
+    return float(a) * float(b)
+Назначение: Выполняет операцию умножения двух чисел.
+Работа: Преобразует аргументы a и b в числа с плавающей точкой и возвращает их произведение.
+8. divide(a, b)
+python
+Копировать код
+def divide(a, b):
+    return float(a) / float(b)
+Назначение: Выполняет операцию деления двух чисел.
+Работа: Преобразует аргументы в числа с плавающей точкой и возвращает результат деления a на b.
+9. expression_break(sign, expression)
+python
+Копировать код
+def expression_break(sign, expression):
+    values = expression.split(sign, 1)
+    return values
+Назначение: Делит выражение на две части по указанному знаку.
+Работа: Использует метод split() для разделения строки expression по первому вхождению символа sign и возвращает список из двух элементов (две части выражения).
+10. scientific(expression)
+python
+Копировать код
+def scientific(expression):
+    data = expression_break("(", expression)
+    if data[0] == "tan":
+        result = m.tan(float(data[1]))
+    elif data[0] == "cos":
+        result = m.cos(float(data[1]))
+    elif data[0] == "sin":
+        result = m.sin(float(data[1]))
+    elif data[0] == "sqrt":
+        result = m.sqrt(float(data[1]))
+    elif data[0] == "log":
+        result = m.log(float(data[1]))
+    elif data[0] == "ln":
+        result = m.log(float(data[1]))
+    elif data[0] == "deg":
+        result = m.degrees(float(data[1]))
+    elif data[0] == "rad":
+        result = m.radians(float(data[1]))
+    elif data[0] == "fac":
+        result = m.factorial(int(data[1]))
+    return result
+Назначение: Обрабатывает научные функции (тангенс, косинус, синус, логарифмы и другие) и возвращает результат вычислений.
+Работа:
+Использует функцию expression_break(), чтобы разделить выражение на имя функции (например, tan) и её аргумент.
+В зависимости от названия функции, выполняет соответствующую математическую операцию из модуля math (например, вычисление тангенса, синуса, квадратного корня и т.д.).
+Возвращает результат вычисления.
+11. equal()
+python
+Копировать код
+def equal():
+    expression = entry.get()
+    clear()
+    try:
+        if "(" in expression:
+            result = scientific(expression)
+        elif "pow" in expression:
+            data = expression_break("pow", expression)
+            result = m.pow(float(data[0]), float(data[1]))
+        elif "rem" in expression:
+            data = expression_break("rem", expression)
+            result = m.remainder(float(data[0]), float(data[1]))
+        elif "×" in expression:
+            data = expression_break("×", expression)
+            result = multiply(data[0], data[1])
+        elif "*" in expression:
+            data = expression_break("*", expression)
+            result = multiply(data[0], data[1])
+        elif "÷" in expression:
+            data = expression_break("÷", expression)
+            result = divide(data[0], data[1])
+        elif "/" in expression:
+            data = expression_break("/", expression)
+            result = divide(data[0], data[1])
+        elif "+" in expression:
+            data = expression_break("+", expression)
+            result = add(data[0], data[1])
+        elif "-" in expression:
+            data = expression_break("-", expression)
+            result = subtract(data[0], data[1])
+        entry.insert(0, result)
+    except:
+        entry.insert(0, "Error")
+Назначение: Обрабатывает выражение и вычисляет его результат.
+Работа:
+Получает текущее выражение из поля ввода.
+Очищает поле ввода.
+Проверяет, содержит ли выражение научные функции (например, tan, log) или основные арифметические операции (сложение, вычитание и т.д.).
+В зависимости от найденного символа или функции, разбивает выражение на операнды и выполняет соответствующую операцию (например, умножение, деление и т.д.).
+Результат выводится в поле ввода.
+Эта функция является основной для вычисления введённых выражений.
+
+Основные кнопки калькулятора:
+Каждая из кнопок (btn_tan, btn_cos, btn_7 и т.д.) представляет собой объект класса Button, который вызывает соответствующую функцию или передает символ в строку ввода.
+
+Пример кнопки:
+python
+Копировать код
+btn_tan = Button(window, text="tan", background="gray11", foreground="Darkorange1",
+                 font=font_value, borderwidth=1, relief=SOLID, 
+                 command=lambda: press("tan("))
+Назначение: Создаёт кнопку с текстом "tan" и задаёт действие, которое произойдёт при нажатии на кнопку.
+Работа: Когда пользователь нажимает кнопку, функция press("tan(") добавляет tan( в поле ввода.
+window.mainloop()
