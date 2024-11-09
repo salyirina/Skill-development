@@ -14,15 +14,6 @@ class Plant:
     def __init__(self, name):
         self.name = name
         self.edible = False #(съедобность)
-
-# Mammal(Млекопитающее), Predator(Хищник) для Animal.
-# 4 класса наследника:
-# У каждого из объектов класса Mammal и Predator должны быть атрибуты и методы:
-# eat(self, food) - метод, где food - это параметр, принимающий объекты классов растений.
-#
-# Метод eat должен работать следующим образом:
-# Если переданное растение (food) съедобное - выводит на экран "<self.name>
-# съел <food.name>", меняется атрибут fed(покормил) на True.
 class Mammal(Animal): #(Млекопитающее)
     def __init__(self,name):
         super().__init__(name)
