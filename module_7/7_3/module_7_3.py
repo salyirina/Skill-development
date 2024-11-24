@@ -1,7 +1,7 @@
 class WordsFinder:
     def __init__(self, *file_names):
         # Сохраняем названия файлов как кортеж
-        self.file_names = file_names
+        self.file_names = list(file_names)
 
     def get_all_words(self):
         all_words = {}
@@ -59,8 +59,12 @@ class WordsFinder:
 # а тестовый код из блока if __name__ == "__main__": не будет мешать работе.
 if __name__ == "__main__":
 
-    finder2 = WordsFinder('test_file.txt', 'Mother Goose - Monday’s Child.txt',
-                          'Mother Goose - Monday’s Child.txt', 'Walt Whitman - O Captain! My Captain!.txt')
+    finder2 = WordsFinder(
+        'test_file.txt',
+        'Mother Goose - Monday’s Child.txt',
+        'Walt Whitman - O Captain! My Captain!.txt'
+    )
+
     print(finder2.get_all_words())  # Все слова
     print(finder2.find('TEXT'))  # 3 слово по счёту
     print(finder2.count('teXT'))  # 4 слова teXT в тексте всего
