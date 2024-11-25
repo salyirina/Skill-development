@@ -99,35 +99,28 @@ root = Tk()
 root.title('Блокнот')
 root.geometry('600x700')
 
-# Главное меню
+# Меню "Файл"
 main_menu = Menu(root)
 
-# Меню "Файл"
 file_menu = Menu(main_menu, tearoff=0)
-file_menu.add_command(label="Открыть", command=open_file, image=icon_open, compound=LEFT)
-file_menu.add_command(label="Сохранить", command=save_file, image=icon_save, compound=LEFT)
-file_menu.add_command(label="Сохранить как", command=save_as, image=icon_save_as, compound=LEFT)
-file_menu.add_command(label="Скачать", command=download_file, image=icon_download, compound=LEFT)
-file_menu.add_command(label="Удалить файл", command=delete_file, image=icon_delete, compound=LEFT)
+file_menu.add_command(label="Открыть", command=open_file)
+file_menu.add_command(label="Сохранить", command=save_file)
+file_menu.add_command(label="Сохранить как", command=save_as)
+file_menu.add_command(label="Скачать", command=download_file)
+file_menu.add_command(label="Удалить файл", command=delete_file)
 file_menu.add_separator()
 file_menu.add_command(label="Выход", command=notepad_exit)
 
-# Добавление меню в главное меню
 main_menu.add_cascade(label="Файл", menu=file_menu)
-root.config(menu=main_menu)
 
 # Загрузка иконок
+icon_dir = "путь_к_каталогу_с_иконками"  # Убедитесь, что путь указан верно
 try:
     icon_open = PhotoImage(file=os.path.join(icon_dir, "open.png"))
-
     icon_save = PhotoImage(file=os.path.join(icon_dir, "save.png"))
-
     icon_save_as = PhotoImage(file=os.path.join(icon_dir, "save_as.png"))
-
     icon_download = PhotoImage(file=os.path.join(icon_dir, "download.png"))
-
     icon_delete = PhotoImage(file=os.path.join(icon_dir, "delete.png"))
-
 except TclError:
     icon_open = None  # Если иконка не найдена, используем None или альтернативу
 
@@ -145,9 +138,9 @@ font_menu.add_command(label='Comic Sans MS', command=lambda: change_fonts('Comic
 font_menu.add_command(label='Times New Roman', command=lambda: change_fonts('TNR'))
 view_menu.add_cascade(label='Шрифт...', menu=font_menu)
 
-# Добавление пунктов в главное меню
-main_menu.add_cascade(label='Файл', menu=file_menu)
 main_menu.add_cascade(label='Вид', menu=view_menu)
+
+# Добавление меню в главное окно
 root.config(menu=main_menu)
 
 # Основной фрейм для текста
@@ -166,35 +159,20 @@ view_colors = {
 
 # Шрифты
 fonts = {
-    'Arial': {
-        'font': 'Arial 14 bold'
-    },
-    'ComicSans': {
-        'font': ('Comic Sans MS', 14, 'bold')
-    },
-    'TNR': {
-        'font': ('Times New Roman', 14, 'bold')
-    }
+    'Arial': {'font': 'Arial 14 bold'},
+    'ComicSans': {'font': ('Comic Sans MS', 14, 'bold')},
+    'TNR': {'font': ('Times New Roman', 14, 'bold')}
 }
 
 # Текстовое поле
-text_field = Text(f_text,
-                  bg='black',
-                  fg='lime',
-                  padx=10,
-                  pady=10,
-                  wrap=WORD,
-                  insertbackground='brown',
-                  selectbackground='#8D917A',
-                  spacing3=10,
-                  width=30,
-                  font='Arial 14 bold'
-                  )
+text_field = Text(f_text, bg='black', fg='lime', padx=10, pady=10, wrap=WORD,
+                  insertbackground='brown', selectbackground='#8D917A', spacing3=10,
+                  width=30, font='Arial 14 bold')
 text_field.pack(expand=1, fill=BOTH, side=LEFT)
 
 # Скроллбар
 scroll = Scrollbar(f_text, command=text_field.yview)
-scroll.pack(side=RIGHT, fill=Y)  # Скроллбар справа
+scroll.pack(side=RIGHT, fill=Y)
 text_field.config(yscrollcommand=scroll.set)
 
 # Запуск основного цикла программы
