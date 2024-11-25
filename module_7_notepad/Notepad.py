@@ -1,23 +1,38 @@
 from tkinter import *
-from tkinter import messagebox
-from tkinter import filedialog
+from tkinter import messagebox, filedialog
+from PIL import Image, ImageTk
 import os
+
+
+def load_icon(path, size=(24, 24)):
+    """Загрузка иконки с помощью Pillow."""
+    try:
+        img = Image.open(path).resize(size, Image.Resampling.LANCZOS)  # Используем LANCZOS для resize
+        return ImageTk.PhotoImage(img)
+    except Exception as e:
+        print(f"Ошибка при загрузке иконки '{path}': {e}")
+        return None
 
 
 def change_theme(theme):
     """Изменение цветовой темы текста."""
-    text_field['bg'] = view_colors[theme]['text_bg']
-    text_field['fg'] = view_colors[theme]['text_fg']
-    text_field['insertbackground'] = view_colors[theme]['cursor']
-    text_field['selectbackground'] = view_colors[theme]['select_bg']
+    if theme in view_colors:
+        text_field['bg'] = view_colors[theme]['text_bg']
+        text_field['fg'] = view_colors[theme]['text_fg']
+        text_field['insertbackground'] = view_colors[theme]['cursor']
+        text_field['selectbackground'] = view_colors[theme]['select_bg']
+    else:
+        messagebox.showerror("Ошибка", f"Тема '{theme}' не найдена.")
 
 
-def change_fonts(font):
+def change_font(font_name):
     """Изменение шрифта текста."""
-    text_field['font'] = fonts[font]['font']
+    if font_name in fonts:
+        text_field.config(font=fonts[font_name]['font'])
+    else:
+        messagebox.showerror("Ошибка", f"Шрифт '{font_name}' не найден.")
 
 
-# Функции
 def open_file():
     """Открыть файл и загрузить содержимое в текстовое поле."""
     file_path = filedialog.askopenfilename(
@@ -50,13 +65,13 @@ def save_file():
             messagebox.showerror("Ошибка", f"Не удалось сохранить файл:\n{e}")
 
 
-def save_as():
-    """Сохранить как (альтернативная функция для создания нового файла)."""
+def save_as_file():
+    """Сохранить как."""
     save_file()
 
 
 def download_file():
-    """Скачать содержимое текстового поля как файл в указанную папку."""
+    """Скачать содержимое текстового поля."""
     file_path = filedialog.asksaveasfilename(
         defaultextension=".txt",
         title="Скачать файл",
@@ -67,15 +82,25 @@ def download_file():
             with open(file_path, "w", encoding="utf-8") as f:
                 text = text_field.get("1.0", END).strip()
                 f.write(text)
-            messagebox.showinfo("Успех", f"Файл успешно скачан:\n{file_path}")
+            messagebox.showinfo("Скачано", f"Файл успешно скачан:\n{file_path}")
         except Exception as e:
             messagebox.showerror("Ошибка", f"Не удалось скачать файл:\n{e}")
 
 
 def delete_file():
-    """Удалить содержимое текстового поля."""
-    if messagebox.askyesno("Удалить файл", "Вы уверены, что хотите удалить содержимое?"):
+    """Очистить содержимое текстового поля."""
+    if messagebox.askyesno("Удалить содержимое", "Вы уверены, что хотите удалить всё содержимое?"):
         text_field.delete("1.0", END)
+
+
+def about_program():
+    """Отображение информации о программе."""
+    messagebox.showinfo("О программе", "Блокнот для редактирования текстовых файлов.\nВерсия 1.0.")
+
+
+def about_us():
+    """Отображение информации 'О нас'."""
+    messagebox.showinfo("О нас", "Ирина из команды разработчиков, которая создала этот блокнот.")
 
 
 def notepad_exit():
@@ -84,96 +109,104 @@ def notepad_exit():
         root.destroy()
 
 
-def show_info():
-    """Отображение информации о приложении."""
-    messagebox.showinfo("Информация", "Блокнот v1.0\nРазработано с использованием tkinter.")
-
-
-def about_program():
-    """Отображение информации о программе."""
-    messagebox.showinfo("О программе", "Блокнот для работы с текстами.\nАвтор: Ирина.")
-
-
 # Создаем главное окно
 root = Tk()
-root.title('Блокнот')
-root.geometry('600x700')
-
-# Меню "Файл"
-main_menu = Menu(root)
-
-file_menu = Menu(main_menu, tearoff=0)
-file_menu.add_command(label="Открыть", command=open_file)
-file_menu.add_command(label="Сохранить", command=save_file)
-file_menu.add_command(label="Сохранить как", command=save_as)
-file_menu.add_command(label="Скачать", command=download_file)
-file_menu.add_command(label="Удалить файл", command=delete_file)
-file_menu.add_separator()
-file_menu.add_command(label="Выход", command=notepad_exit)
-
-main_menu.add_cascade(label="Файл", menu=file_menu)
-
-# Загрузка иконок
-icon_dir = os.getcwd()  # Убедитесь, что путь указан верно
-try:
-    icon_open = PhotoImage(file=os.path.join(icon_dir, "open.png"))
-    icon_save = PhotoImage(file=os.path.join(icon_dir, "save.png"))
-    icon_save_as = PhotoImage(file=os.path.join(icon_dir, "save_as.png"))
-    icon_download = PhotoImage(file=os.path.join(icon_dir, "download.png"))
-    icon_delete = PhotoImage(file=os.path.join(icon_dir, "delete.png"))
-except TclError:
-    icon_open = None  # Если иконка не найдена, используем None или альтернативу
-
-# Меню "Вид"
-view_menu = Menu(main_menu, tearoff=0)
-theme_menu = Menu(view_menu, tearoff=0)
-font_menu = Menu(view_menu, tearoff=0)
-
-theme_menu.add_command(label='Тёмная', command=lambda: change_theme('dark'))
-theme_menu.add_command(label='Светлая', command=lambda: change_theme('light'))
-view_menu.add_cascade(label='Тема', menu=theme_menu)
-
-font_menu.add_command(label='Arial', command=lambda: change_fonts('Arial'))
-font_menu.add_command(label='Comic Sans MS', command=lambda: change_fonts('ComicSans'))
-font_menu.add_command(label='Times New Roman', command=lambda: change_fonts('TNR'))
-view_menu.add_cascade(label='Шрифт...', menu=font_menu)
-
-main_menu.add_cascade(label='Вид', menu=view_menu)
-
-# Добавление меню в главное окно
-root.config(menu=main_menu)
-
-# Основной фрейм для текста
-f_text = Frame(root)
-f_text.pack(fill=BOTH, expand=1)
+root.title("Блокнот")
+root.geometry("800x600")
 
 # Цветовые темы
 view_colors = {
-    'dark': {
-        'text_bg': 'black', 'text_fg': 'lime', 'cursor': 'brown', 'select_bg': '#8D917A'
-    },
-    'light': {
-        'text_bg': 'white', 'text_fg': 'black', 'cursor': '#A5A5A5', 'select_bg': '#FAEEDD'
-    }
+    'dark': {'text_bg': 'black', 'text_fg': 'lime', 'cursor': 'white', 'select_bg': '#555555'},
+    'light': {'text_bg': 'white', 'text_fg': 'black', 'cursor': 'black', 'select_bg': '#CCCCCC'}
 }
 
 # Шрифты
 fonts = {
-    'Arial': {'font': 'Arial 14 bold'},
-    'ComicSans': {'font': ('Comic Sans MS', 14, 'bold')},
-    'TNR': {'font': ('Times New Roman', 14, 'bold')}
+    'Arial': {'font': ('Arial', 14)},
+    'ComicSans': {'font': ('Comic Sans MS', 14)},
+    'TNR': {'font': ('Times New Roman', 14)}
 }
 
-# Текстовое поле
-text_field = Text(f_text, bg='black', fg='lime', padx=10, pady=10, wrap=WORD,
-                  insertbackground='brown', selectbackground='#8D917A', spacing3=10,
-                  width=30, font='Arial 14 bold')
+# Создаем текстовый фрейм и поле
+f_text = Frame(root)
+f_text.pack(expand=1, fill=BOTH)
+
+text_field = Text(f_text, bg='white', fg='black', padx=10, pady=10, wrap=WORD,
+                  insertbackground='black', selectbackground='#CCCCCC', spacing3=10,
+                  width=30, font='Arial 14')
 text_field.pack(expand=1, fill=BOTH, side=LEFT)
 
 # Скроллбар
 scroll = Scrollbar(f_text, command=text_field.yview)
 scroll.pack(side=RIGHT, fill=Y)
 text_field.config(yscrollcommand=scroll.set)
+
+# Загрузка иконок для кнопок
+icon_open = load_icon("icons/open.ico")  # Иконка для кнопки "Открыть"
+icon_save = load_icon("icons/save.ico")  # Иконка для кнопки "Сохранить"
+icon_save_as = load_icon("icons/save_as.ico")  # Иконка для кнопки "Сохранить как"
+icon_download = load_icon("icons/download.ico")  # Иконка для кнопки "Скачать"
+icon_delete = load_icon("icons/delete.ico")  # Иконка для кнопки "Удалить"
+
+# Определяем текущую директорию скрипта
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Устанавливаем путь к иконке
+icon_path = os.path.join(script_dir, "icons")
+
+# Проверяем существование файла
+if not os.path.exists(icon_path):
+    print(f"Иконка не найдена по пути: {icon_path}")
+else:
+    print(f"Иконка найдена: {icon_path}")
+
+# Устанавливаем иконку
+try:
+    root.iconbitmap(icon_path)
+except Exception as e:
+    print(f"Ошибка при установке иконки через iconbitmap: {e}")
+    # Альтернативный способ через PhotoImage
+    icon_image = PhotoImage(file=icon_path)
+    root.iconphoto(True, icon_image)
+
+# Главное меню
+main_menu = Menu(root)
+
+# Меню "Файл"
+file_menu = Menu(main_menu, tearoff=0)
+file_menu.add_command(label="Открыть", image=icon_open, compound=LEFT, command=open_file)
+file_menu.add_command(label="Сохранить", image=icon_save, compound=LEFT, command=save_file)
+file_menu.add_command(label="Сохранить как", image=icon_save_as, compound=LEFT, command=save_as_file)
+file_menu.add_command(label="Скачать", image=icon_download, compound=LEFT, command=download_file)
+file_menu.add_command(label="Удалить", image=icon_delete, compound=LEFT, command=delete_file)
+file_menu.add_separator()
+file_menu.add_command(label="Выход", compound=LEFT, command=notepad_exit)
+
+main_menu.add_cascade(label="Файл", menu=file_menu)
+
+# Меню "Вид"
+view_menu = Menu(main_menu, tearoff=0)
+theme_menu = Menu(view_menu, tearoff=0)
+theme_menu.add_command(label="Тёмная", command=lambda: change_theme('dark'))
+theme_menu.add_command(label="Светлая", command=lambda: change_theme('light'))
+view_menu.add_cascade(label="Тема", menu=theme_menu)
+
+font_menu = Menu(view_menu, tearoff=0)
+for font_name in fonts.keys():
+    font_menu.add_command(label=font_name, command=lambda f=font_name: change_font(f))
+view_menu.add_cascade(label="Шрифт", menu=font_menu)
+
+main_menu.add_cascade(label="Вид", menu=view_menu)
+
+# Меню "Справка"
+help_menu = Menu(main_menu, tearoff=0)
+help_menu.add_command(label="О программе", command=about_program)
+help_menu.add_command(label="О нас", command=about_us)
+
+main_menu.add_cascade(label="Справка", menu=help_menu)
+
+# Применение главного меню
+root.config(menu=main_menu)
 
 # Запуск основного цикла программы
 root.mainloop()
