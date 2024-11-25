@@ -114,7 +114,7 @@ file_menu.add_command(label="Выход", command=notepad_exit)
 main_menu.add_cascade(label="Файл", menu=file_menu)
 
 # Загрузка иконок
-icon_dir = "путь_к_каталогу_с_иконками"  # Убедитесь, что путь указан верно
+icon_dir = os.getcwd()  # Убедитесь, что путь указан верно
 try:
     icon_open = PhotoImage(file=os.path.join(icon_dir, "open.png"))
     icon_save = PhotoImage(file=os.path.join(icon_dir, "save.png"))
