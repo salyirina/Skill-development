@@ -104,18 +104,17 @@ main_menu = Menu(root)
 
 # Меню "Файл"
 file_menu = Menu(main_menu, tearoff=0)
-file_menu.add_command(label='Открыть', command=open_file)
-file_menu.add_command(label='Сохранить', command=save_file)
-file_menu.add_command(label='Сохранить как', command=save_as)
+file_menu.add_command(label="Открыть", command=open_file, image=icon_open, compound=LEFT)
+file_menu.add_command(label="Сохранить", command=save_file, image=icon_save, compound=LEFT)
+file_menu.add_command(label="Сохранить как", command=save_as, image=icon_save_as, compound=LEFT)
+file_menu.add_command(label="Скачать", command=download_file, image=icon_download, compound=LEFT)
+file_menu.add_command(label="Удалить файл", command=delete_file, image=icon_delete, compound=LEFT)
 file_menu.add_separator()
-file_menu.add_command(label='Info', command=show_info)
-file_menu.add_command(label='О программе', command=about_program)
-file_menu.add_separator()
-file_menu.add_command(label='Закрыть', command=notepad_exit)
+file_menu.add_command(label="Выход", command=notepad_exit)
 
-# Определение базовой директории проекта
-base_dir = os.path.dirname(__file__)
-icon_dir = os.path.join(base_dir, "icon")
+# Добавление меню в главное меню
+main_menu.add_cascade(label="Файл", menu=file_menu)
+root.config(menu=main_menu)
 
 # Загрузка иконок
 try:
