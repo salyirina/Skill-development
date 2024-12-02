@@ -1,12 +1,12 @@
-#single_root_words - однокоренные слова
+# single_root_words - однокоренные слова
 # root_word - корневое слово
 # other_words -другие слова
 # same_words - одинаковые слова
 
 def single_root_words(root_word, *other_words):
-    # При проверке наличия одного слова в составе другого стоит учесть, что регистр символов не должен влиять ни на что.
+    # При проверке наличия одного слова в составе другого стоит учесть,
+    # что регистр символов не должен влиять ни на что.
     root_word_lower = root_word.lower()
-
     same_words = []
 
     for word in other_words:
@@ -23,4 +23,3 @@ result2 = single_root_words('Able', 'Disable', 'Enable', 'Table', 'Dog')
 
 print(result1)
 print(result2)
-

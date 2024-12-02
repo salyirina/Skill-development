@@ -1,6 +1,5 @@
 def calculate_structure_sum(data):
     total_sum = 0
-
     # Проверка каждого элемента в структуре
     if isinstance(data, (int, float)):  # Если это число
         total_sum += data
