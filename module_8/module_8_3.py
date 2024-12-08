@@ -14,37 +14,38 @@ class Car:
     def __init__(self, model, vin, numbers):
         self.model = model
         # Проверяем vin номер
-        if not self.__is_valid_vin(vin):
-            raise IncorrectVinNumber(f'Некорректный vin номер')
-        self.__vin = vin
-        # Проверяем номера автомобиля
-        if not self.__is_valid_numbers(numbers):
-            raise IncorrectCarNumbers("Некорректные номера автомобиля")
-        self.__numbers = numbers
 
-        def __init__(self, model, vin, numbers):
-            ….self.model = model
+        # Проверяем vin и устанавливаем только при успешной валидации
+        if self.__is_valid_vin(vin):
+            self.__vin = vin
 
-        ….if self.__is_valid_vin(vin):
-            ….….self.__vin = vin
-        ….if self.__is_valid_numbers(numbers):
-            ….….self.__numbers = numbers
+        # Проверяем numbers и устанавливаем только при успешной валидации
+        if self.__is_valid_numbers(numbers):
+            self.__numbers = numbers
 
     # Приватный метод для проверки vin номера
 
-    def __is_valid_vin(vin_number):
+    def __is_valid_vin(self, vin_number):
+        # Проверяем, что vin_number - целое число
         if not isinstance(vin_number, int):
             raise IncorrectVinNumber("Некорректный тип vin номер")
-        if vin_number < 1000000 or vin_number > 9999999:
+
+        # Проверяем, что vin_number находится в допустимом диапазоне
+        if not (1000000 <= vin_number <= 9999999):
             raise IncorrectVinNumber("Неверный диапазон для vin номера")
+        # Если исключений не было, возвращаем True
         return True
 
-
-    def __is_valid_numbers(numbers):
+    # Приватный метод для проверки номера
+    def __is_valid_numbers(self, numbers):
+        # Проверяем, что numbers - строка
         if not isinstance(numbers, str):
             raise IncorrectCarNumbers("Некорректный тип данных для номеров")
+
+        # Проверяем длину строки numbers
         if len(numbers) != 6:
             raise IncorrectCarNumbers("Неверная длина номера")
+        # Если исключений не было, возвращаем True
         return True
 
 
