@@ -14,12 +14,15 @@ second_result = [(f_s, s_s) for f_s in first_strings for s_s in second_strings i
 # Словарь созданный при помощи сборки, где парой ключ-значение будет строка-длина строки.
 # Значения строк будут перебираться из объединённых вместе списков first_strings и second_strings.
 # Условие записи пары в словарь - чётная длина строки.
-third_result = {strings: len(strings) for strings in first_strings + second_strings}
+third_result = {strings: len(strings) for strings in first_strings + second_strings if len(strings) % 2 == 0}
 
 
 print(first_result)
 print(second_result)
 print(third_result)
+
+
+
 
 finish_time = time.time()
 print(f'Время в милисекундах: {(finish_time-start_time) * 1000}')
