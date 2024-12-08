@@ -1,3 +1,7 @@
+import time
+
+start_time = time.time()
+
 # Классы исключений
 class IncorrectVinNumber(Exception):
     def __init__(self, message):
@@ -76,3 +80,6 @@ except IncorrectCarNumbers as exc:
     print(exc.message)
 else:
     print(f'{third.model} успешно создан')
+
+finish_time = time.time()
+print(f'Время в милисекундах: {(finish_time-start_time) * 1000}')

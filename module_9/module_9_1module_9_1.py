@@ -1,3 +1,7 @@
+import time
+
+start_time = time.time()
+
 def apply_all_func(int_list, *functions):
     # Создаём словарь для результатов
     result = {}
@@ -14,3 +18,7 @@ def apply_all_func(int_list, *functions):
 print(apply_all_func.__name__)
 print(apply_all_func([6, 20, 15, 9], max, min))
 print(apply_all_func([6, 20, 15, 9], len, sum, sorted))
+
+
+finish_time = time.time()
+print(f'Время в милисекундах: {(finish_time-start_time) * 1000}')

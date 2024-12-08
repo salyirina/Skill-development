@@ -1,3 +1,6 @@
+import time
+
+start_time = time.time()
 # Список созданный при помощи сборки состоящий из длин строк списка
 # при условии, что длина строк не менее 5 символов.
 first_strings = ['Elon', 'Musk', 'Programmer', 'Monitors', 'Variable']
@@ -17,3 +20,6 @@ third_result = {strings: len(strings) for strings in first_strings + second_stri
 print(first_result)
 print(second_result)
 print(third_result)
+
+finish_time = time.time()
+print(f'Время в милисекундах: {(finish_time-start_time) * 1000}')
