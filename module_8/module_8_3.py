@@ -22,8 +22,16 @@ class Car:
             raise IncorrectCarNumbers("Некорректные номера автомобиля")
         self.__numbers = numbers
 
+        def __init__(self, model, vin, numbers):
+            ….self.model = model
+
+        ….if self.__is_valid_vin(vin):
+            ….….self.__vin = vin
+        ….if self.__is_valid_numbers(numbers):
+            ….….self.__numbers = numbers
+
     # Приватный метод для проверки vin номера
-    @staticmethod
+
     def __is_valid_vin(vin_number):
         if not isinstance(vin_number, int):
             raise IncorrectVinNumber("Некорректный тип vin номер")
@@ -31,7 +39,7 @@ class Car:
             raise IncorrectVinNumber("Неверный диапазон для vin номера")
         return True
 
-    @staticmethod
+
     def __is_valid_numbers(numbers):
         if not isinstance(numbers, str):
             raise IncorrectCarNumbers("Некорректный тип данных для номеров")
