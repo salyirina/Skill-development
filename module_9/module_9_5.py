@@ -36,7 +36,13 @@ class Iterator:
         self.pointer += self.step
         return value
 
-
+    def __next__(self):
+        """Метод для получения следующего значения итератора."""
+        if (self.step > 0 and self.pointer >= self.stop) or (self.step < 0 and self.pointer <= self.stop):
+            raise StopIteration
+        value = self.pointer
+        self.pointer += self.step
+        return value
 
 
 # Пример выполняемого кода:
