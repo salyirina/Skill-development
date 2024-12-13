@@ -1,5 +1,3 @@
-# Задача "Range - это просто":
-
 class StepValueError(ValueError):
     """
     Исключение, которое вызывается, если шаг для итератора равен нулю.
@@ -25,19 +23,9 @@ class Iterator:
         return self
 
 
-    # __next__ - метод, увеличивающий атрибут pointer на step. В зависимости
-    # от знака атрибута step итерация завершится либо когда pointer станет больше stop,
-    # либо меньше stop. Учтите это при описании метода.
     def __next__(self):
         """Метод для получения следующего значения итератора."""
-        if (self.step > 0 and self.pointer >= self.stop) or (self.step < 0 and self.pointer <= self.stop):
-            raise StopIteration
-        value = self.pointer
-        self.pointer += self.step
-        return value
 
-    def __next__(self):
-        """Метод для получения следующего значения итератора."""
         if (self.step > 0 and self.pointer >= self.stop) or (self.step < 0 and self.pointer <= self.stop):
             raise StopIteration
         value = self.pointer
